@@ -10,12 +10,12 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/krol22/automate_firma/ai"
-	"github.com/krol22/automate_firma/ai/llm"
-	"github.com/krol22/automate_firma/email"
-	"github.com/krol22/automate_firma/env"
-	"github.com/krol22/automate_firma/log"
-	"github.com/krol22/automate_firma/state"
+	"github.com/krol22/invoice_go_sort_sort/ai"
+	"github.com/krol22/invoice_go_sort_sort/ai/llm"
+	"github.com/krol22/invoice_go_sort_sort/email"
+	"github.com/krol22/invoice_go_sort_sort/env"
+	"github.com/krol22/invoice_go_sort_sort/log"
+	"github.com/krol22/invoice_go_sort_sort/state"
 )
 
 var l = log.Get()
@@ -137,7 +137,7 @@ func main() {
 		l.Print("#################################")
 	}
 
-	l.Print("Starting automate firma script...")
+	l.Print("Starting invoice sorting...")
 
 	if os.Getenv("ENV") == "development" {
 		l.Print("Loading .env file...")

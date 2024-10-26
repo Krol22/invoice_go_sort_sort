@@ -3,7 +3,7 @@ package llm
 import (
 	"fmt"
 
-	"github.com/krol22/automate_firma/ai"
+	"github.com/krol22/invoice_go_sort_sort/ai"
 )
 
 type AnalyzeInvoiceLLMInput struct {

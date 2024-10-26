@@ -1,4 +1,4 @@
-module github.com/krol22/automate_firma
+module github.com/krol22/invoice_go_sort_sort
 
 go 1.22.4
 

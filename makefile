@@ -21,16 +21,16 @@ build:
 
 	go build \
 		-ldflags "\
-		-X 'github.com/krol22/automate_firma/env.ForwardedFromEmail=${FORWARDED_FROM_EMAIL}' \
-		-X 'github.com/krol22/automate_firma/env.ForwardedToEmail=${FORWARDED_TO_EMAIL}' \
-		-X 'github.com/krol22/automate_firma/env.Email=${EMAIL}' \
-		-X 'github.com/krol22/automate_firma/env.IcloudPath=${ICLOUD_PATH}' \
-		-X 'github.com/krol22/automate_firma/env.ApiKey=${API_KEY}' \
-		-X 'github.com/krol22/automate_firma/env.AnthropicKey=${ANTHROPIC_KEY}' \
-		-X 'github.com/krol22/automate_firma/env.AnthropicVersion=${ANTHROPIC_VERSION}' \
-		-X 'github.com/krol22/automate_firma/env.PushoverApiToken=${PUSHOVER_API_TOKEN}' \
-		-X 'github.com/krol22/automate_firma/env.PushoverUserKey=${PUSHOVER_USER_KEY}'" \
-	-o dist/automate_firma main.go
+		-X 'github.com/krol22/invoice_go_sort_sort/env.ForwardedFromEmail=${FORWARDED_FROM_EMAIL}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.ForwardedToEmail=${FORWARDED_TO_EMAIL}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.Email=${EMAIL}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.IcloudPath=${ICLOUD_PATH}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.ApiKey=${API_KEY}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.AnthropicKey=${ANTHROPIC_KEY}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.AnthropicVersion=${ANTHROPIC_VERSION}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.PushoverApiToken=${PUSHOVER_API_TOKEN}' \
+		-X 'github.com/krol22/invoice_go_sort_sort/env.PushoverUserKey=${PUSHOVER_USER_KEY}'" \
+	-o dist/invoice_go_sort_sort main.go
 
 	go run scripts/generate_plist.go
 
@@ -46,10 +46,10 @@ check-env:
 	@test -n "$(PUSHOVER_USER_KEY)" || (echo "PUSHOVER_USER_KEY is not set" && exit 1)
 
 install: check-env build
-	mkdir -p $(HOME)/.scripts/automate_firma
-	cp dist/automate_firma $(HOME)/.scripts/automate_firma
+	mkdir -p $(HOME)/.scripts/invoice_go_sort_sort
+	cp dist/invoice_go_sort_sort $(HOME)/.scripts/invoice_go_sort_sort
 
-	launchctl unload -w ~/Library/LaunchAgents/com.krol22.automate_firma.plist
-	cp dist/com.krol22.automate_firma.plist ~/Library/LaunchAgents/com.krol22.automate_firma.plist
-	launchctl load -w ~/Library/LaunchAgents/com.krol22.automate_firma.plist
+	launchctl unload -w ~/Library/LaunchAgents/com.krol22.invoice_go_sort_sort.plist
+	cp dist/com.krol22.invoice_go_sort_sort.plist ~/Library/LaunchAgents/com.krol22.invoice_go_sort_sort.plist
+	launchctl load -w ~/Library/LaunchAgents/com.krol22.invoice_go_sort_sort.plist
 

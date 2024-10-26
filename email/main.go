@@ -8,7 +8,7 @@ import (
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
 	"github.com/emersion/go-message/mail"
-	"github.com/krol22/automate_firma/log"
+	"github.com/krol22/invoice_go_sort_sort/log"
 )
 
 var l = log.Get()

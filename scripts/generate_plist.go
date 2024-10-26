@@ -26,9 +26,9 @@ func main() {
 	}
 
 	agent := LaunchAgent{
-		Label: "com.krol22.automate_firma",
+		Label: "com.krol22.invoice_go_sort_sort",
 		ProgramArguments: []string{
-			filepath.Join(homeDir, ".scripts/automate_firma/automate_firma"),
+			filepath.Join(homeDir, ".scripts/invoice_go_sort_sort/invoice_go_sort_sort"),
 		},
 		RunAtLoad: true,
 		StartCalendarInterval: []CalendarInterval{
@@ -39,7 +39,7 @@ func main() {
 		},
 	}
 
-	file, err := os.Create("dist/com.krol22.automate_firma.plist")
+	file, err := os.Create("dist/com.krol22.invoice_go_sort_sort.plist")
 	if err != nil {
 		panic(err)
 	}

@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/krol22/automate_firma/log"
-	"github.com/krol22/automate_firma/utils"
+	"github.com/krol22/invoice_go_sort_sort/log"
+	"github.com/krol22/invoice_go_sort_sort/utils"
 )
 
 type AnthropicClient struct {

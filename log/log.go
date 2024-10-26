@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/krol22/automate_firma/notifications"
+	"github.com/krol22/invoice_go_sort_sort/notifications"
 	"github.com/rs/zerolog"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -20,7 +20,7 @@ type FailureHook struct{}
 
 func (f *FailureHook) Run(e *zerolog.Event, level zerolog.Level, msg string) {
 	if level == zerolog.FatalLevel && msg != "" {
-		notifications.SendAlert("AutomateFirma script failed!")
+		notifications.SendAlert("InvoiceGoSortSort failed! " + msg)
 	}
 }
 
@@ -38,7 +38,7 @@ func Get() zerolog.Logger {
 				return
 			}
 
-			logPath := filepath.Join(homeDir, "Library/Logs/com.krol22.automate_firma")
+			logPath := filepath.Join(homeDir, "Library/Logs/com.krol22.invoice_go_sort_sort")
 			os.MkdirAll(logPath, 0755)
 
 			fileLogger := &lumberjack.Logger{

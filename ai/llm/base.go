@@ -1,6 +1,6 @@
 package llm
 
-import "github.com/krol22/automate_firma/ai"
+import "github.com/krol22/invoice_go_sort_sort/ai"
 
 type BaseLLM struct {
   inputData interface{}

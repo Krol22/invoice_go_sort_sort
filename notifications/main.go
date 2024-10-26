@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/krol22/automate_firma/env"
+	"github.com/krol22/invoice_go_sort_sort/env"
 )
 
 func SendAlert(message string) error {
