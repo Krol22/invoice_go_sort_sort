@@ -13,6 +13,7 @@ import (
 	"github.com/krol22/automate_firma/ai"
 	"github.com/krol22/automate_firma/ai/llm"
 	"github.com/krol22/automate_firma/email"
+	"github.com/krol22/automate_firma/env"
 	"github.com/krol22/automate_firma/log"
 	"github.com/krol22/automate_firma/state"
 )
@@ -35,7 +36,7 @@ var polishMonths = map[time.Month]string{
 }
 
 func getInvoiceMonthPath(invoiceDate string) string {
-	icloudPath := os.Getenv("ICLOUD_PATH")
+	icloudPath := env.Get("ICLOUD_PATH")
 
 	date, err := time.Parse("2006-01-02", invoiceDate)
 	if err != nil {
@@ -86,15 +87,15 @@ func extractTextFromPDF(file []byte) (string, error) {
 }
 
 func getEmailInvoices(lastRun time.Time) ([]*email.EmailMessage, error) {
-	emailManager, err := email.NewEmailManager(os.Getenv("EMAIL"), os.Getenv("API_KEY"))	
+	emailManager, err := email.NewEmailManager(env.Get("EMAIL"), env.Get("API_KEY"))	
 	if err != nil {
 		return nil, fmt.Errorf("failed to create email manager: %v", err)
 	}
 	defer emailManager.Logout()
 
 	messages, err := emailManager.GetFilteredMessages(
-		os.Getenv("FORWARDED_FROM_EMAIL"),
-		os.Getenv("FORWARDED_TO_EMAIL"),
+		env.Get("FORWARDED_FROM_EMAIL"),
+		env.Get("FORWARDED_TO_EMAIL"),
 		lastRun.AddDate(0, 0, -1),
 	)
 	if err != nil {
@@ -105,7 +106,7 @@ func getEmailInvoices(lastRun time.Time) ([]*email.EmailMessage, error) {
 }
 
 func analyzeAttachment(pdfText string, attachment *email.Attachment) error {
-	anthropicClient := ai.NewClient(os.Getenv("ANTHROPIC_KEY"))
+	anthropicClient := ai.NewClient(env.Get("ANTHROPIC_KEY"))
 	analyzeInvoice := llm.NewAnalyzeInvoiceLLM(&llm.AnalyzeInvoiceLLMInput{
 		Invoice: pdfText,
 	})
@@ -137,7 +138,6 @@ func main() {
 	}
 
 	l.Print("Starting automate firma script...")
-
 
 	if os.Getenv("ENV") == "development" {
 		l.Print("Loading .env file...")

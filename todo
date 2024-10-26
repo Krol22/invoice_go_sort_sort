@@ -11,5 +11,6 @@
 [x] - setup filter to pass the email to karol.torun94@gmail.com,
 [x] - improve message filtering (forward with something in subject??), 
 [x] - use the last run date to filter the emails,
-[] - setup some alert if didn't work,
+[x] - setup some alert if didn't work,
+[x] - remove env from the plist and bake them in the code,
 [] - readme,

@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
+
+	"github.com/krol22/automate_firma/env"
 )
 
 func SendAlert(message string) error {
-  user_key := os.Getenv("PUSHOVER_USER_KEY")
-  api_token := os.Getenv("PUSHOVER_API_TOKEN")
+  user_key := env.Get("PUSHOVER_USER_KEY")
+  api_token := env.Get("PUSHOVER_API_TOKEN")
 
   body := map[string]string{
     "token": api_token,
