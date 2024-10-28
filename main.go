@@ -95,7 +95,6 @@ func getEmailInvoices(lastRun time.Time) ([]*email.EmailMessage, error) {
 
 	messages, err := emailManager.GetFilteredMessages(
 		env.Get("FORWARDED_FROM_EMAIL"),
-		env.Get("FORWARDED_TO_EMAIL"),
 		lastRun.AddDate(0, 0, -1),
 	)
 	if err != nil {

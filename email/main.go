@@ -61,7 +61,6 @@ func (e *EmailManager) Logout() error {
 
 func (e *EmailManager) GetFilteredMessages(
 	email string,
-	to string,
 	dateFrom time.Time,
 ) ([]*EmailMessage, error) {
 	l.Print("Opening email inbox.")
@@ -73,12 +72,10 @@ func (e *EmailManager) GetFilteredMessages(
 	// Set search criteria
 	criteria := imap.NewSearchCriteria()
 	criteria.Since = dateFrom
-	criteria.Header.Set("From", email)
-	criteria.Header.Set("To", to)
+	criteria.Header.Set("To", email)
 
 	l.Print("Searching for messages using criteria:", map[string]string{
-		"From":  email,
-		"To":  to,
+		"To":  email,
 		"Since": dateFrom.Format("2006-01-02"),
 	})
 	uids, err := e.client.Search(criteria)
