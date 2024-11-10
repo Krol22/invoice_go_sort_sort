@@ -7,8 +7,10 @@ import (
 
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"github.com/emersion/go-message/charset"
 	"github.com/emersion/go-message/mail"
 	"github.com/krol22/invoice_go_sort_sort/log"
+	"golang.org/x/text/encoding/charmap"
 )
 
 var l = log.Get()
@@ -28,6 +30,8 @@ type EmailManager struct {
 }
 
 func NewEmailManager(email, password string) (*EmailManager, error) {
+	charset.RegisterEncoding("windows-1250", charmap.Windows1250)
+
   em := &EmailManager{}
   if err := em.Login(email, password); err != nil {
     return nil, err
@@ -141,6 +145,7 @@ func (e *EmailManager) processMessage(msg *imap.Message) (*EmailMessage, error) 
 			if err == io.EOF {
 				break
 			}
+
 			if err != nil {
 				return nil, fmt.Errorf("failed to get next part: %v", err)
 			}

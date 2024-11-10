@@ -16,6 +16,8 @@ import (
 	"github.com/krol22/invoice_go_sort_sort/env"
 	"github.com/krol22/invoice_go_sort_sort/log"
 	"github.com/krol22/invoice_go_sort_sort/state"
+	"github.com/pdfcpu/pdfcpu/pkg/api"
+	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
 )
 
 var l = log.Get()
@@ -55,6 +57,65 @@ func createFoldersIfNecessary(path string) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		os.MkdirAll(path, 0755)
 	}
+}
+
+
+func upgradePDFVersion() ([]byte, error) {
+		tmpDir := os.TempDir()
+		pdfPath := tmpDir + "/pdf.pdf"
+		inputFile, err := os.Open(pdfPath)
+    if err != nil {
+        return nil, fmt.Errorf("error opening input file: %v", err)
+    }
+    defer inputFile.Close()
+
+    // Create configuration with version 1.4
+    conf := model.NewDefaultConfiguration()
+    conf.Version = "1.4"
+
+    // Get page count of input file
+    pageCount, err := api.PageCount(inputFile, conf)
+    if err != nil {
+        return nil, fmt.Errorf("error getting page count: %v", err)
+    }
+
+    // Create a list of pages to copy (all pages)
+    pages := make([]string, pageCount)
+    for i := 0; i < pageCount; i++ {
+        pages[i] = fmt.Sprintf("%d", i+1)
+    }
+
+		tempDir, err := os.MkdirTemp("", "pdf_upgrade_*")
+    if err != nil {
+        return nil, fmt.Errorf("error creating temp directory: %v", err)
+    }
+    // defer os.RemoveAll(tempDir) // Clean up when done
+
+		outputFilename := "upgraded.pdf"
+
+    // Extract pages to temp directory
+    err = api.ExtractPages(inputFile, tempDir, outputFilename, pages, conf)
+    if err != nil {
+        return nil, fmt.Errorf("error extracting pages: %v", err)
+    }
+
+		// Get list of extracted files
+    var inFiles []string
+    for i := 1; i <= pageCount; i++ {
+        inFiles = append(inFiles, filepath.Join(tempDir, fmt.Sprintf("upgraded_page_%d.pdf", i)))
+    }
+
+    // Create buffer for final output
+    var buf bytes.Buffer
+
+    // Merge all pages into a single PDF
+    err = api.Merge("", inFiles, &buf, conf, false)
+    if err != nil {
+        return nil, fmt.Errorf("error merging pages: %v", err)
+    }
+
+    fmt.Printf("Successfully created new PDF version 1.4 with %d pages\n", pageCount)
+    return buf.Bytes(), nil
 }
 
 func extractTextFromPDF(file []byte) (string, error) {
@@ -161,7 +222,16 @@ func main() {
 				pdfText, err := extractTextFromPDF(attachment.Content)
 
 				if err != nil {
-					l.Fatal().Err(err).Msg("Error extracting text from PDF")
+					l.Print("Upgrading PDF version...")
+					v14, err := upgradePDFVersion()
+					if err != nil {
+						l.Fatal().Err(err).Msg("Error upgrading PDF version")
+					}
+
+					pdfText, err = extractTextFromPDF(v14)
+					if err != nil {
+						l.Fatal().Err(err).Msg("Error extracting text from PDF")
+					}
 				}
 
 				err = analyzeAttachment(pdfText, &attachment)

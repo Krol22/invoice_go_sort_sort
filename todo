@@ -13,4 +13,5 @@
 [x] - use the last run date to filter the emails,
 [x] - setup some alert if didn't work,
 [x] - remove env from the plist and bake them in the code,
+[] - add retry mechanism,
 [] - readme,
